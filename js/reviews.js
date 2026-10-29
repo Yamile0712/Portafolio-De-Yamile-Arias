@@ -45,19 +45,13 @@
     wall.append(box);
   };
 
-  const fallbackReviews = [
-    {
-      name: 'Luis Mateo Tabares Pérez',
-      project: 'Diseño',
-      rating: 5,
-      comment: 'Excelente atención y servicio'
-    }
-  ];
-
   const renderReviews = (reviews) => {
-    const list = reviews.length ? reviews : fallbackReviews;
+    if (!reviews.length) {
+      showMessage('Aún no hay reseñas', 'Cuando haya comentarios reales, aparecerán aquí.');
+      return;
+    }
     wall.replaceChildren();
-    list.forEach((review) => {
+    reviews.forEach((review) => {
       const rating = Math.min(5, Math.max(1, Number(review.rating) || 5));
       const card = document.createElement('article');
       card.className = 'review-card';
@@ -84,7 +78,7 @@
 
   const loadReviews = async () => {
     if (!configured) {
-      renderReviews(fallbackReviews);
+      showMessage('Reseñas sin conectar', 'Falta configurar la conexión con la base de datos.');
       return;
     }
     try {
