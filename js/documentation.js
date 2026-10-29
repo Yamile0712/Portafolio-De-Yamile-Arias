@@ -7,6 +7,21 @@
   if (!dialog || !openButton || !list) return;
 
   const documents = [{
+    name: 'Manual de Marca — Grimorio.pdf',
+    extension: 'PDF',
+    description: 'Manual de identidad visual · PDF',
+    url: 'docs/Manual_De_Marca_Grimorio.pdf',
+    socials: [{
+      label: 'Instagram · Grimorio',
+      url: 'https://www.instagram.com/grimoriointeractivo?xtok=a2F0dWEyajV0ZG0w'
+    }, {
+      label: 'Facebook · Grimorio',
+      url: 'https://www.facebook.com/share/1CCdrm97Bz/'
+    }, {
+      label: 'TikTok · Grimorio',
+      url: 'https://www.tiktok.com/@grimoriointeractivo?_r=1&_t=ZS-9AKvYWkGzuT'
+    }]
+  }, {
     name: 'Manual de marca — Vamos Pal Monte.pdf',
     extension: 'PDF',
     description: 'Manual de identidad visual · PDF',
@@ -65,18 +80,21 @@
       view.setAttribute('aria-label', `Abrir ${documentInfo.name}`);
       actions.append(view);
       item.append(badge, meta, actions);
-      if (documentInfo.socialUrl) {
+      const socials = documentInfo.socials || (documentInfo.socialUrl
+        ? [{ label: documentInfo.socialLabel, url: documentInfo.socialUrl }]
+        : []);
+      socials.forEach(({ label, url }) => {
         const social = document.createElement('a');
         social.className = 'docs-file__social';
-        social.href = documentInfo.socialUrl;
+        social.href = url;
         social.target = '_blank';
         social.rel = 'noopener noreferrer';
-        social.setAttribute('aria-label', 'Visitar ' + documentInfo.socialLabel);
+        social.setAttribute('aria-label', 'Visitar ' + label);
 
-        social.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" class="docs-file__social-dot"/></svg><span></span><span aria-hidden="true">↗</span>';
-        social.querySelector('span').textContent = documentInfo.socialLabel;
+        social.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg><span></span><span aria-hidden="true">↗</span>';
+        social.querySelector('span').textContent = label;
         item.append(social);
-      }
+      });
       list.append(item);
     });
   };
